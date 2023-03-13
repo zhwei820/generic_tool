@@ -887,3 +887,53 @@ func TestIsSubset(t *testing.T) {
 	ret = IsSubset([]string{"", "foo", "", "bar", ""}, []string{"", "foo", "barzzzz"})
 	is.False(ret)
 }
+
+func TestSubtract(t *testing.T) {
+	type args struct {
+		s2 []string
+		s1 []string
+	}
+	tests := []struct {
+		name      string
+		args      args
+		wantUnion []string
+	}{
+		{
+			args: args{
+				s2: []string{"11", "22", "33"},
+				s1: []string{"11", "22", "333"},
+			},
+			wantUnion: []string{"33"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.wantUnion, Subtract(tt.args.s2, tt.args.s1))
+		})
+	}
+}
+
+func TestUnion(t *testing.T) {
+	type args struct {
+		s2 []string
+		s1 []string
+	}
+	tests := []struct {
+		name      string
+		args      args
+		wantUnion []string
+	}{
+		{
+			args: args{
+				s2: []string{"11", "22", "33"},
+				s1: []string{"11", "22", "333"},
+			},
+			wantUnion: []string{"11", "22", "333", "33"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, Sort(tt.wantUnion), Sort(Union(tt.args.s2, tt.args.s1)))
+		})
+	}
+}

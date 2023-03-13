@@ -691,6 +691,7 @@ func DeepCopy[T any](collection []T) []T {
 	return append([]T{}, collection...)
 }
 
+// s1 and s2
 func Intersection[T generic_tool.Hashable](s1, s2 []T) (inter []T) {
 	hash := make(map[T]bool)
 	for _, e := range s1 {
@@ -700,6 +701,34 @@ func Intersection[T generic_tool.Hashable](s1, s2 []T) (inter []T) {
 		// If elements present in the hashmap then append intersection list.
 		if hash[e] {
 			inter = append(inter, e)
+		}
+	}
+	return
+}
+
+// s1 or s2
+func Union[T generic_tool.Hashable](s1, s2 []T) (union []T) {
+	hash := make(map[T]bool)
+	for _, e := range s1 {
+		hash[e] = true
+	}
+	for _, e := range s2 {
+		if !hash[e] {
+			s1 = append(s1, e)
+		}
+	}
+	return s1
+}
+
+// s2 - s1
+func Subtract[T generic_tool.Hashable](s2, s1 []T) (sub []T) {
+	hash := make(map[T]bool)
+	for _, e := range s1 {
+		hash[e] = true
+	}
+	for _, e := range s2 {
+		if !hash[e] {
+			sub = append(sub, e)
 		}
 	}
 	return
